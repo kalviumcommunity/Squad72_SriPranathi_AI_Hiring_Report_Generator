@@ -1,0 +1,39 @@
+# **AI Hiring Report Generator**
+
+The **AI Hiring Report Generator** is a tool that streamlines the recruitment process by generating insightful hiring reports from candidate information.
+
+It uses **Large Language Models (LLMs)** to analyze candidate profiles, assess skills, and provide structured insights that help recruiters make data-driven decisions faster.
+
+---
+
+## **Key Features**
+
+* **AI-Powered Insights** – Evaluates candidate details using advanced language models.
+* **Automated Report Generation** – Saves recruiter time by instantly creating detailed hiring reports.
+* **Easy Integration** – Exposes a simple API endpoint that can connect with ATS or HR systems.
+* **Interactive API Docs** – Comes with a built-in Swagger UI for easy testing.
+
+---
+
+## **How It Works**
+
+1. Recruiters provide candidate details such as skills, experience, and education.
+2. The system processes the data using AI models.
+3. A structured, easy-to-read hiring report is generated instantly.
+
+---
+
+## **Benefits**
+
+* Reduces manual work for HR teams.
+* Provides consistent and unbiased candidate evaluations.
+* Improves hiring speed and decision-making.
+
+---
+
+## **Use Cases**
+
+* **Recruitment Agencies** – Quickly screen and shortlist candidates.
+* **HR Departments** – Generate standard reports for interviews.
+* **Internal Hiring Teams** – Integrate into internal tools for faster candidate evaluation.
+

@@ -47,3 +47,27 @@ def generate_hiring_report(candidate_info: dict, job_description: str) -> str:
     
     # Return the LLM's output
     return response.choices[0].message.content.strip()
+
+def generate_zero_shot(candidate_data: str, job_description: str) -> str:
+    """
+    Zero-shot: only system + user prompt, no examples.
+    """
+    user_prompt = f"""
+    Candidate Information:
+    {candidate_data}
+
+    Job Description:
+    {job_description}
+
+    Task: Generate a hiring insights report.
+    """
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": user_prompt}
+        ],
+        temperature=0.7
+    )
+    return response.choices[0].message.content

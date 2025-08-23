@@ -157,3 +157,32 @@ def generate_multi_shot(candidate_data: str, job_description: str) -> str:
         temperature=0.7
     )
     return response.choices[0].message.content.strip()
+
+def generate_chain_of_thought(candidate_data: str, job_description: str) -> str:
+    """
+    Chain-of-Thought: ask the model to reason step by step before final report.
+    """
+    user_prompt = f"""
+    Candidate Information:
+    {candidate_data}
+
+    Job Description:
+    {job_description}
+
+    Please think step by step:
+    1. Analyze the candidate’s skills and experience.
+    2. Compare with the job requirements.
+    3. Identify strengths and weaknesses.
+    4. Then, provide a clear final structured hiring recommendation.
+    """
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": user_prompt}
+        ],
+        temperature=0.7,
+        max_tokens=1000
+    )
+    return response.choices[0].message.content.strip()

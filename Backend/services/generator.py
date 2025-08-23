@@ -71,3 +71,41 @@ def generate_zero_shot(candidate_data: str, job_description: str) -> str:
         temperature=0.7
     )
     return response.choices[0].message.content
+
+def generate_one_shot(candidate_data: str, job_description: str) -> str:
+    """
+    One-shot: provide one example before the actual task.
+    """
+    example_job = "Software Engineer role requiring Python, APIs, teamwork."
+    example_candidate = {"name": "Alex", "skills": ["Python", "APIs"], "experience": "2 years"}
+    example_output = """
+    Candidate Overview: Alex, 2 years of experience.
+    Skills Match: Strong in Python & APIs.
+    Strengths: Technical foundation, fast learner.
+    Weaknesses: Limited leadership experience.
+    Recommendation: Suitable for junior developer role.
+    """
+
+    user_prompt = f"""
+    Example:
+    Job Description: {example_job}
+    Candidate: {example_candidate}
+    Expected Hiring Report: {example_output}
+
+    Now generate a hiring report for:
+
+    Job Description: {job_description}
+    Candidate: {candidate_data}
+    """
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": user_prompt}
+        ],
+        temperature=0.7
+    )
+    return response.choices[0].message.content.strip()
+
+

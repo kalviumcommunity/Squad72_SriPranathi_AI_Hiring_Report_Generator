@@ -109,3 +109,51 @@ def generate_one_shot(candidate_data: str, job_description: str) -> str:
     return response.choices[0].message.content.strip()
 
 
+def generate_multi_shot(candidate_data: str, job_description: str) -> str:
+    """
+    Multi-shot: provide multiple examples before the actual task.
+    """
+    examples = [
+        {
+            "job": "Data Analyst role with SQL, Excel, BI tools.",
+            "candidate": {"name": "Maria", "skills": ["Excel", "SQL"], "experience": "3 years"},
+            "report": "Overview: Maria, 3 years of experience.\n"
+                      "Skills Match: Strong in SQL & Excel.\n"
+                      "Strengths: Detail-oriented, analytical.\n"
+                      "Weaknesses: Limited BI exposure.\n"
+                      "Recommendation: Good fit with some training."
+        },
+        {
+            "job": "Marketing Manager role needing strategy & leadership.",
+            "candidate": {"name": "John", "skills": ["Strategy", "Leadership"], "experience": "6 years"},
+            "report": "Overview: John, 6 years of marketing experience.\n"
+                      "Skills Match: Strong alignment.\n"
+                      "Strengths: Leadership, vision.\n"
+                      "Weaknesses: Needs more digital marketing exposure.\n"
+                      "Recommendation: Strong candidate."
+        }
+    ]
+
+    examples_text = "\n\n".join(
+        f"Example:\nJob: {ex['job']}\nCandidate: {ex['candidate']}\nReport: {ex['report']}"
+        for ex in examples
+    )
+
+    user_prompt = f"""
+    {examples_text}
+
+    Now generate a hiring report for:
+
+    Job Description: {job_description}
+    Candidate: {candidate_data}
+    """
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": user_prompt}
+        ],
+        temperature=0.7
+    )
+    return response.choices[0].message.content.strip()

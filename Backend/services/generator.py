@@ -1,6 +1,6 @@
 from openai import OpenAI
 import os
-from config import OPENAI_API_KEY, TEMPERATURE, TOP_P
+from config import OPENAI_API_KEY, TEMPERATURE, TOP_P, STOP_SEQUENCE
 
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -40,7 +40,8 @@ def generate_hiring_report(candidate_info: dict, job_description: str) -> str:
             {"role": "user", "content": user_prompt}
         ],
         temperature=TEMPERATURE,   
-        top_p=TOP_P
+        top_p=TOP_P,
+        stop=[STOP_SEQUENCE] 
     )
     
     # Return the LLM's output
@@ -67,7 +68,8 @@ def generate_zero_shot(candidate_data: str, job_description: str) -> str:
             {"role": "user", "content": user_prompt}
         ],
         temperature=TEMPERATURE,   
-        top_p=TOP_P
+        top_p=TOP_P,
+        stop=[STOP_SEQUENCE]
     )
     return response.choices[0].message.content
 
@@ -104,7 +106,8 @@ def generate_one_shot(candidate_data: str, job_description: str) -> str:
             {"role": "user", "content": user_prompt}
         ],
         temperature=TEMPERATURE,   
-        top_p=TOP_P
+        top_p=TOP_P,
+        stop=[STOP_SEQUENCE]
     )
     return response.choices[0].message.content.strip()
 
@@ -155,7 +158,8 @@ def generate_multi_shot(candidate_data: str, job_description: str) -> str:
             {"role": "user", "content": user_prompt}
         ],
         temperature=TEMPERATURE,   
-        top_p=TOP_P
+        top_p=TOP_P,
+        stop=[STOP_SEQUENCE]
     )
     return response.choices[0].message.content.strip()
 
@@ -184,6 +188,7 @@ def generate_chain_of_thought(candidate_data: str, job_description: str) -> str:
             {"role": "user", "content": user_prompt}
         ],
         temperature=TEMPERATURE,   
-        top_p=TOP_P
+        top_p=TOP_P,
+        stop=[STOP_SEQUENCE]
     )
     return response.choices[0].message.content.strip()

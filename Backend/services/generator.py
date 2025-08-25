@@ -1,9 +1,7 @@
 from openai import OpenAI
 import os
+from config import OPENAI_API_KEY, TEMPERATURE, TOP_P
 
-# Make sure your OpenAI API key is set as an environment variable
-# Example (PowerShell):
-# $env:OPENAI_API_KEY = "your_api_key_here"
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
@@ -41,8 +39,8 @@ def generate_hiring_report(candidate_info: dict, job_description: str) -> str:
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt}
         ],
-        temperature=0.7,  # creativity level
-        max_tokens=800
+        temperature=TEMPERATURE,   
+        top_p=TOP_P
     )
     
     # Return the LLM's output
@@ -68,7 +66,8 @@ def generate_zero_shot(candidate_data: str, job_description: str) -> str:
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": user_prompt}
         ],
-        temperature=0.7
+        temperature=TEMPERATURE,   
+        top_p=TOP_P
     )
     return response.choices[0].message.content
 
@@ -104,7 +103,8 @@ def generate_one_shot(candidate_data: str, job_description: str) -> str:
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": user_prompt}
         ],
-        temperature=0.7
+        temperature=TEMPERATURE,   
+        top_p=TOP_P
     )
     return response.choices[0].message.content.strip()
 
@@ -154,7 +154,8 @@ def generate_multi_shot(candidate_data: str, job_description: str) -> str:
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": user_prompt}
         ],
-        temperature=0.7
+        temperature=TEMPERATURE,   
+        top_p=TOP_P
     )
     return response.choices[0].message.content.strip()
 
@@ -182,7 +183,7 @@ def generate_chain_of_thought(candidate_data: str, job_description: str) -> str:
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": user_prompt}
         ],
-        temperature=0.7,
-        max_tokens=1000
+        temperature=TEMPERATURE,   
+        top_p=TOP_P
     )
     return response.choices[0].message.content.strip()

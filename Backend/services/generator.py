@@ -41,7 +41,7 @@ def generate_hiring_report(candidate_info: dict, job_description: str) -> str:
         ],
         temperature=TEMPERATURE,   
         top_p=TOP_P,
-        top_k=TOP_K, 
+        top_k=TOP_K,
         stop=[STOP_SEQUENCE] 
     )
     
@@ -70,7 +70,7 @@ def generate_zero_shot(candidate_data: str, job_description: str) -> str:
         ],
         temperature=TEMPERATURE,   
         top_p=TOP_P,
-        top_k=TOP_K, 
+        top_k=TOP_K,
         stop=[STOP_SEQUENCE]
     )
     return response.choices[0].message.content
@@ -109,7 +109,7 @@ def generate_one_shot(candidate_data: str, job_description: str) -> str:
         ],
         temperature=TEMPERATURE,   
         top_p=TOP_P,
-        top_k=TOP_K, 
+        top_k=TOP_K,
         stop=[STOP_SEQUENCE]
     )
     return response.choices[0].message.content.strip()
@@ -162,7 +162,7 @@ def generate_multi_shot(candidate_data: str, job_description: str) -> str:
         ],
         temperature=TEMPERATURE,   
         top_p=TOP_P,
-        top_k=TOP_K, 
+        top_k=TOP_K,
         stop=[STOP_SEQUENCE]
     )
     return response.choices[0].message.content.strip()
@@ -193,7 +193,7 @@ def generate_chain_of_thought(candidate_data: str, job_description: str) -> str:
         ],
         temperature=TEMPERATURE,   
         top_p=TOP_P,
-        top_k=TOP_K, 
+        top_k=TOP_K,
         stop=[STOP_SEQUENCE]
     )
     return response.choices[0].message.content.strip()

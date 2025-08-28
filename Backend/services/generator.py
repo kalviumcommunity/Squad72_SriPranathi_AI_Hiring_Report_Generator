@@ -247,3 +247,56 @@ if __name__ == "__main__":
     # run_stop_sequence()
     # run_top_k()
     run_structured_output()
+
+
+    CANDIDATE_DB = {
+    "Alice": {"skills": ["Python", "ML"], "experience": "2 years"},
+    "Bob": {"skills": ["JavaScript", "React"], "experience": "1 year"},
+    "Charlie": {"skills": ["Java", "Spring"], "experience": "3 years"}
+}
+
+# Function the LLM can call
+def get_candidate_info(name: str):
+    return CANDIDATE_DB.get(name, {"error": "Candidate not found"})
+
+# Function calling example
+def generate_with_function_calling(prompt: str):
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt}],
+        tools=[
+            {
+                "type": "function",
+                "function": {
+                    "name": "get_candidate_info",
+                    "description": "Fetch candidate info by name",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "name": {"type": "string", "description": "Candidate's name"}
+                        },
+                        "required": ["name"],
+                    },
+                },
+            }
+        ]
+    )
+
+    message = response.choices[0].message
+
+    # If the model decides to call a function
+    if message.tool_calls:
+        tool_call = message.tool_calls[0]
+        function_name = tool_call.function.name
+        args = json.loads(tool_call.function.arguments)
+
+        if function_name == "get_candidate_info":
+            return get_candidate_info(args["name"])
+    
+    # Otherwise, return normal text output
+    return message.content
+
+if __name__ == "__main__":
+    print(generate_with_function_calling("Tell me about Alice"))
+    print(generate_with_function_calling("Fetch Bob's profile"))
+    print(generate_with_function_calling("What skills does Charlie have?"))

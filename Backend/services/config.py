@@ -7,6 +7,7 @@ load_dotenv()
 # Config variables
 TEMPERATURE = float(os.getenv("TEMPERATURE", 0.7))
 TOP_P = float(os.getenv("TOP_P", 1))
+TOP_K = int(os.getenv("TOP_K", 50))
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 STOP_SEQUENCE = os.getenv("STOP_SEQUENCE", "###END###")
 

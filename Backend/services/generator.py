@@ -1,6 +1,6 @@
 from openai import OpenAI
 import os
-from config import OPENAI_API_KEY, TEMPERATURE, TOP_P, STOP_SEQUENCE, TOP_K
+from config import OPENAI_API_KEY, TEMPERATURE, TOP_P, STOP_SEQUENCE, TOP_K, client
 
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -198,3 +198,52 @@ def generate_chain_of_thought(candidate_data: str, job_description: str) -> str:
     )
     return response.choices[0].message.content.strip()
 
+
+def run_structured_output():
+    SYSTEM_PROMPT = "You are an AI assistant that generates structured hiring reports for candidates."
+    USER_PROMPT = "Generate a hiring report for a software engineer candidate with 3 years of Python experience and some leadership skills."
+
+    # JSON schema for structured output
+    hiring_report_schema = {
+        "type": "object",
+        "properties": {
+            "summary": {"type": "string"},
+            "strengths": {
+                "type": "array",
+                "items": {"type": "string"}
+            },
+            "weaknesses": {
+                "type": "array",
+                "items": {"type": "string"}
+            },
+            "recommendation": {"type": "string"}
+        },
+        "required": ["summary", "strengths", "weaknesses", "recommendation"]
+    }
+
+    response = client.chat.completions.create(
+        model="gpt-4.1",
+        messages=[
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": USER_PROMPT}
+        ],
+        temperature=0.7,
+        response_format={
+            "type": "json_schema",
+            "json_schema": {
+                "name": "hiring_report",
+                "schema": hiring_report_schema
+            }
+        }
+    )
+
+    result = response.choices[0].message.parsed
+    print("Structured Output:\n", result)
+
+
+if __name__ == "__main__":
+    # You can switch which function to run
+    # run_temperature()
+    # run_stop_sequence()
+    # run_top_k()
+    run_structured_output()

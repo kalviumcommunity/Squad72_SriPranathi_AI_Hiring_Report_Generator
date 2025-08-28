@@ -197,3 +197,4 @@ def generate_chain_of_thought(candidate_data: str, job_description: str) -> str:
         stop=[STOP_SEQUENCE]
     )
     return response.choices[0].message.content.strip()
+
